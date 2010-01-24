@@ -1,0 +1,10 @@
+{
+    "name": "nodejs",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com:cadorn/platforms.git",
+            "path": "packages/nodejs"
+        }
+    ]
+}

@@ -1,9 +1,9 @@
 {
-  "name": "platforms",
-  "repositories": [
-    {
-      "type": "git",
-      "url": "git://github.com:cadorn/platforms.git"
-    }
-  ]
+    "name": "platforms",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com:cadorn/platforms.git"
+        }
+    ]
 }

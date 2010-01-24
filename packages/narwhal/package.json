@@ -1,0 +1,22 @@
+{
+    "name": "narwhal",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com:cadorn/platforms.git",
+            "path": "packages/narwhal"
+        }
+    ],
+    "using": {
+        "narwhal": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+            "name": "narwhal",
+            "revision": "experimental"
+        }
+    },
+    "pinf": {
+        "builder": {
+            "module": "builder.js"
+        }
+    }
+}
