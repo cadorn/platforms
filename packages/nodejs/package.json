@@ -1,4 +1,5 @@
 {
+    "uid": "http://registry.pinf.org/cadorn.org/github/platforms/packages/nodejs/",
     "name": "nodejs",
     "repositories": [
         {
