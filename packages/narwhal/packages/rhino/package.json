@@ -1,0 +1,32 @@
+{
+    "name": "narwhal",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/platforms.git",
+            "path": "packages/narwhal/packages/rhino"
+        }
+    ],
+    "using": {
+        "narwhal": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+            "name": "narwhal",
+            "revision": "experimental"
+        },
+        "jack": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/catalog.json",
+            "name": "jack",
+            "revision": "master"
+        }
+    },
+    "implements": {
+        "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/@meta/platform/macros": {
+            "module": "macros"
+        }
+    },
+    "pinf": {
+        "builder": {
+            "module": "builder"
+        }
+    }
+}
