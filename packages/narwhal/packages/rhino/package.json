@@ -1,6 +1,6 @@
 {
-    "uid": "http://registry.pinf.org/cadorn.org/github/platforms/packages/narwhal/packages/narwhal/",
-    "name": "narwhal",
+    "uid": "http://registry.pinf.org/cadorn.org/github/platforms/packages/narwhal/packages/rhino/",
+    "name": "rhino",
     "repositories": [
         {
             "type": "git",
