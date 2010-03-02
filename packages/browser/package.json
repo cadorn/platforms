@@ -1,0 +1,11 @@
+{
+    "uid": "http://registry.pinf.org/cadorn.org/github/platforms/packages/browser/",
+    "name": "browser",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/platforms.git",
+            "path": "packages/browser"
+        }
+    ]
+}
