@@ -1,0 +1,32 @@
+{
+    "uid": "http://registry.pinf.org/cadorn.org/github/platforms/packages/php/packages/zendserver/",
+    "name": "zendserver",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/platforms.git",
+            "path": "packages/php/packages/zendserver"
+        }
+    ],
+    "using": {
+        "php": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/platforms/packages/catalog.json",
+            "name": "php",
+            "revision": "master"
+        }
+    },
+    "implements": {
+        "http://registry.pinf.org/cadorn.org/github/platforms/@meta/install/helpers/0.1.0": {
+            "module": "helpers"
+        },
+        "http://registry.pinf.org/cadorn.org/github/platforms/packages/php/@meta/stack/0.1.0": {},
+        "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/@meta/platform/services/0.1.0": {
+            "module": "services"
+        }
+    },
+    "pinf": {
+        "builder": {
+            "module": "builder"
+        }
+    }
+}

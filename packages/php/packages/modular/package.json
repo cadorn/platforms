@@ -1,0 +1,36 @@
+{
+    "uid": "http://registry.pinf.org/cadorn.org/github/platforms/packages/php/packages/modular/",
+    "name": "modular",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git://github.com/cadorn/platforms.git",
+            "path": "packages/php/packages/zendserver"
+        }
+    ],
+    "using": {
+        "php-platform": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/platforms/packages/catalog.json",
+            "name": "php",
+            "revision": "master"
+        },
+        "template": {
+            "location": "http://github.com/gmosx/template/zipball/master"
+        },
+        "modular-php-core": {
+            "catalog": "http://registry.pinf.org/cadorn.org/github/modular-php/packages/catalog.json",
+            "name": "core",
+            "revision": "master"
+        }
+    },
+    "implements": {
+        "http://registry.pinf.org/cadorn.org/github/platforms/@meta/install/actors/0.1.0": {
+            "module": "actors"
+        }
+    },
+    "pinf": {
+        "builder": {
+            "module": "builder"
+        }
+    }
+}

@@ -18,7 +18,7 @@ Builder.prototype = BUILDER.Builder();
 
 
 
-Builder.prototype.build = function(pkg, options) {
+Builder.prototype.build = function(targetPackage, options) {
 
     var targetBasePath = options.path,
         sourcePath,

@@ -21,8 +21,8 @@
         }
     },
     "implements": {
-        "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/@meta/platform/macros": {
-            "module": "macros"
+        "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/@meta/platform/services/0.1.0": {
+            "module": "services"
         }
     },
     "pinf": {

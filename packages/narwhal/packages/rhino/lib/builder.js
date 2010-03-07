@@ -17,7 +17,7 @@ Builder.prototype = BUILDER.Builder();
 
 
 
-Builder.prototype.build = function(pkg, options) {
+Builder.prototype.build = function(targetPackage, buildOptions) {
 
     var self = this,
         descriptor = this.pkg.getDescriptor(),
@@ -25,7 +25,7 @@ Builder.prototype.build = function(pkg, options) {
         narwhalPackage = this.getPackageForLocator(locator),
         sourceBasePath = narwhalPackage.getPath(),
         sourcePath,
-        targetBasePath = options.path,
+        targetBasePath = targetPackage.getPath(),
         targetPath,
         basename;
 
