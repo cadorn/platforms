@@ -1,11 +1,9 @@
 
-
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
 /**
  * @pinf.implements http://registry.pinf.org/cadorn.org/github/pinf/packages/common/@meta/platform/services/0.1.0
  */
-
 
 var JSON = require("json");
 
@@ -26,7 +24,7 @@ exports.expandMacros = function(context, contents) {
             "system.sea = \"" + context.targetPackage.getPath().valueOf() + "\";",
             "var PACKAGES = require(\"packages\");",
             "PACKAGES.load([",
-            "  \"" + context.targetPackage.getPath().valueOf() + "\",",
+            "  \"" + context.targetPackage.getBuildPath().join("program").valueOf() + "\",",
             "  \"" + context.platform.getPath().join("vendor").valueOf() + "\"",
             "]);",
             JSON.encode(mappings) + ".forEach(function(mapping) {",

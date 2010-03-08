@@ -67,6 +67,8 @@ Builder.prototype.build = function(targetPackage, buildOptions) {
         targetPath.join(basename).dirname().mkdirs();
         sourcePath.join(basename).symlink(targetPath.join(basename));
     });
+    // ensure some important commands are executable
+    targetPath.join("engines/rhino/bin/narwhal-rhino").chmod(0755);
     
     
     // symlink additional packages
