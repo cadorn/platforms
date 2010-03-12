@@ -2,32 +2,58 @@
 
 function dump(obj) { print(require('test/jsdump').jsDump.parse(obj)) };
 
-var LOCATOR = require("package/locator", "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/");
-var BUILDER = require("builder", "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/");
+var BUILDER = require("builder/program", "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/");
 var PINF = require("pinf", "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/");
+var JSON = require("json");
 
 
-var Builder = exports.Builder = function(pkg, options) {
-    if (!(this instanceof exports.Builder))
-        return new exports.Builder(pkg, options);
-    this.construct(pkg, options);
+var ProgramBuilder = exports.ProgramBuilder = function() {
+    if (!(this instanceof exports.ProgramBuilder))
+        return new exports.ProgramBuilder();
 }
 
-Builder.prototype = BUILDER.Builder();
+ProgramBuilder.prototype = BUILDER.ProgramBuilder();
 
 
-
-Builder.prototype.build = function(targetPackage, buildOptions) {
-
+ProgramBuilder.prototype.build = function(options) {
+    
     var self = this,
-        descriptor = this.pkg.getDescriptor(),
-        locator = this.getLocatorForSpec(descriptor.spec.using.narwhal),
-        narwhalPackage = this.getPackageForLocator(locator),
+        descriptor = this.sourcePackage.getDescriptor(),
+        narwhalLocator = descriptor.getUsingLocatorForName("narwhal"),
+        narwhalPackage = PINF.getPackageForLocator(narwhalLocator),
         sourceBasePath = narwhalPackage.getPath(),
-        sourcePath,
-        targetBasePath = targetPackage.getPath(),
-        targetPath,
-        basename;
+        targetBasePath = this.targetPackage.getPath();
+
+    var sourcePath, targetPath, basename;        
+
+    
+    // link narwhal
+    targetPath = targetBasePath.join("vendor");
+    sourcePath = sourceBasePath;
+    [
+        "engines",
+        "lib",
+        "packages/readline",
+        "tests",
+        "narwhal.js",
+        "package.json"
+    ].forEach(function(basename) {
+        targetPath.join(basename).dirname().mkdirs();
+        sourcePath.join(basename).symlink(targetPath.join(basename));
+    });
+    // ensure some important commands are executable
+    targetPath.join("engines/rhino/bin/narwhal-rhino").chmod(0755);
+
+    
+    // symlink additional packages
+    
+    targetPath = targetBasePath.join("vendor", "packages");
+    descriptor.everyUsing(function(name, locator) {
+        if(name=="narwhal") return;
+        sourcePath = PINF.getPackageForLocator(locator).getPath();
+        sourcePath.symlink(targetPath.join(name));
+    });
+    
 
     // TODO: Take OS into account when copying OS specific files
 
@@ -53,33 +79,6 @@ Builder.prototype.build = function(targetPackage, buildOptions) {
     ].join("\n"));
     targetPath.chmod(0755);
 
-
-    targetPath = targetBasePath.join("vendor");
-    sourcePath = sourceBasePath;
-    [
-        "engines",
-        "lib",
-        "packages/readline",
-        "tests",
-        "narwhal.js",
-        "package.json"
-    ].forEach(function(basename) {
-        targetPath.join(basename).dirname().mkdirs();
-        sourcePath.join(basename).symlink(targetPath.join(basename));
-    });
-    // ensure some important commands are executable
-    targetPath.join("engines/rhino/bin/narwhal-rhino").chmod(0755);
-    
-    
-    // symlink additional packages
-    
-    targetPath = targetBasePath.join("vendor", "packages");
-    descriptor.everyUsing(function(name, locator) {
-        if(name=="narwhal") return;
-        sourcePath = PINF.getPackageForLocator(locator).getPath();
-        sourcePath.symlink(targetPath.join(name));
-    });
-    
     
     // write some more bin files
     
@@ -90,5 +89,35 @@ Builder.prototype.build = function(targetPackage, buildOptions) {
         "require('jackup').main(system.args);"
     ].join("\n"));
     targetPath.chmod(0755);
-
 }
+
+
+ProgramBuilder.prototype.expandMacros = function(programPackage, contents) {
+
+    contents = contents.replace(/\/\*PINF_MACRO\[NarwhalShebang\]\*\//g, [
+        "#!/usr/bin/env " + programPackage.getPath().join("bin", "narwhal").valueOf()
+    ].join("\n"));
+
+    if(/\/\*PINF_MACRO\[LoadCommandEnvironment\]\*\//.test(contents)) {
+        // collect all dependencies (recursively) for package
+        var mappings = PINF.getPackageStore().deepMappingsForPackage(this.targetPackage);
+        if(!mappings) {
+            mappings = [];
+        }
+        contents = contents.replace(/\/\*PINF_MACRO\[LoadCommandEnvironment\]\*\//g, [
+            "system.env.SEA = \"" + this.targetPackage.getPath().valueOf() + "\";",
+            "system.sea = \"" + this.targetPackage.getPath().valueOf() + "\";",
+            "var PACKAGES = require(\"packages\");",
+            "PACKAGES.load([",
+            "  \"" + this.targetPackage.getPath().valueOf() + "\",",
+            "  \"" + programPackage.getBuildPath().join(this.getTarget(), "vendor").valueOf() + "\"",
+            "]);",
+            JSON.encode(mappings) + ".forEach(function(mapping) {",
+            "  PACKAGES.registerUsingPackage(mapping[0], mapping[1]);",
+            "});"
+        ].join("\n"));
+    }
+
+    return contents;
+}
+
