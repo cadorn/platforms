@@ -81,11 +81,11 @@ ProgramBuilder.prototype.build = function(options) {
 
     
     // write some more bin files
-    
+
     targetPath = targetBasePath.join("bin", "jackup");
     targetPath.dirname().mkdirs();
     targetPath.write([
-        "#!/usr/bin/env " + targetBasePath.join("bin", "narwhal").valueOf(),
+        "#!/usr/bin/env " + PINF.getDatabase().getShebangPath(targetBasePath.join("bin", "narwhal")).valueOf(),
         "require('jackup').main(system.args);"
     ].join("\n"));
     targetPath.chmod(0755);
@@ -95,7 +95,7 @@ ProgramBuilder.prototype.build = function(options) {
 ProgramBuilder.prototype.expandMacros = function(programPackage, contents) {
 
     contents = contents.replace(/\/\*PINF_MACRO\[NarwhalShebang\]\*\//g, [
-        "#!/usr/bin/env " + programPackage.getPath().join("bin", "narwhal").valueOf()
+        "#!/usr/bin/env " + PINF.getDatabase().getShebangPath(programPackage.getPath().join("bin", "narwhal")).valueOf()
     ].join("\n"));
 
     if(/\/\*PINF_MACRO\[LoadCommandEnvironment\]\*\//.test(contents)) {
