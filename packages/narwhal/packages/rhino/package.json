@@ -21,8 +21,7 @@
         }
     },
     "implements": {
-        "http://registry.pinf.org/cadorn.org/github/pinf/packages/common/@meta/platform/services/0.1.0": {
-            "module": "services"
+        "http://registry.pinf.org/cadorn.org/github/pinf/@meta/platform/package/0.1.0": {
         },
         "http://registry.pinf.org/cadorn.org/github/pinf/@meta/program/package/0.1.0": {
             "builders": {
